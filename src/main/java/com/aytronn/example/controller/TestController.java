@@ -60,9 +60,10 @@ public class TestController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Object> deleteTest(
-      @PathVariable String id
+  public ResponseEntity<Test> deleteTest(
+      @PathVariable UUID id
   ) {
-    return testService.deleteTest(id);
+    Test test = testService.deleteTest(id);
+    return ResponseEntity.ok(test);
   }
 }

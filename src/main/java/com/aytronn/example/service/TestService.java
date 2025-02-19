@@ -19,10 +19,12 @@ public class TestService {
   }
 
   public List<Test> getAllTest() {
+    //TODO: FIND ALL OBJECT ON DATABASE
     return tests;
   }
 
   public Test getTestById(UUID id) {
+    //TODO: FIND OBJECT FROM DATABASE WITH FILTER ON ID
     Optional<Test> first = tests.stream()
         .filter(test -> test.getId().equals(id))
         .findFirst();
@@ -41,7 +43,7 @@ public class TestService {
         createTestDto.age()
     );
 
-    // Save test to database
+    //TODO: SAVE OBJECT TO DATABASE
     tests.add(test);
     return test;
   }
@@ -58,7 +60,14 @@ public class TestService {
     return testById;
   }
 
-  public ResponseEntity<Object> deleteTest(String id) {
-    return null;
+  public Test deleteTest(UUID id) {
+    Test testById = tests.stream().filter(test -> test.getId().equals(id))
+        .findFirst()
+        .orElseThrow(() -> new RuntimeException("Test not found"));
+
+    //TODO: REMOVE OBJECT TO DATABASE
+    tests.remove(testById);
+
+    return testById;
   }
 }
