@@ -4,6 +4,7 @@ import com.aytronn.example.dao.Test;
 import com.aytronn.example.dto.CreateTestDto;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,15 @@ public class TestService {
     return tests;
   }
 
-  public ResponseEntity<String> getTestById(String id) {
-    return null;
+  public Test getTestById(UUID id) {
+    Optional<Test> first = tests.stream()
+        .filter(test -> test.getId().equals(id))
+        .findFirst();
+
+    if (first.isEmpty()) {
+      throw new RuntimeException("Test not found");
+    }
+    return first.get();
   }
 
   public Test createTest(CreateTestDto createTestDto) {
@@ -38,8 +46,16 @@ public class TestService {
     return test;
   }
 
-  public ResponseEntity<Object> updateTest(CreateTestDto createTestDto, String id) {
-    return null;
+  public Test updateTest(CreateTestDto createTestDto, UUID id) {
+    Test testById = tests.stream().filter(test -> test.getId().equals(id))
+        .findFirst()
+        .orElseThrow(() -> new RuntimeException("Test not found"));
+
+    testById.setName(createTestDto.name());
+    testById.setDescription(createTestDto.description());
+    testById.setAge(createTestDto.age());
+    //TODO: SAVE TO DATABASE
+    return testById;
   }
 
   public ResponseEntity<Object> deleteTest(String id) {

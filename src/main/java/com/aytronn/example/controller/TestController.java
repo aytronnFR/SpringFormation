@@ -6,6 +6,7 @@ import com.aytronn.example.service.TestService;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,11 +37,11 @@ public class TestController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<String> getTestById(
-      @PathVariable String id,
-      @RequestParam String parameterOptional
+  public ResponseEntity<Test> getTestById(
+      @PathVariable UUID id
   ) {
-    return testService.getTestById(id);
+    Test testById = testService.getTestById(id);
+    return ResponseEntity.ok(testById);
   }
 
   @PostMapping
@@ -50,11 +51,12 @@ public class TestController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Object> updateTest(
+  public ResponseEntity<Test> updateTest(
       @RequestBody CreateTestDto createTestDto,
-      @PathVariable String id
+      @PathVariable UUID id
   ) {
-    return testService.updateTest(createTestDto, id);
+    Test test = testService.updateTest(createTestDto, id);
+    return ResponseEntity.ok(test);
   }
 
   @DeleteMapping("/{id}")
