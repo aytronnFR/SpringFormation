@@ -13,6 +13,7 @@ app:
 example:
   config:
     message: "Hello, World!"
+    value: "test123test"
 
 springdoc:
   show-actuator: false
@@ -27,6 +28,11 @@ error:
     http-status-in-json-response: true
 
 spring:
+  datasource:
+    url: jdbc:postgresql://postgis.aytronn.com
+    driverClassName: org.h2.Driver
+    username: "${DB_USER:example}"
+    password: "${DB_PASS:example}"
   security:
     user:
       name: user
