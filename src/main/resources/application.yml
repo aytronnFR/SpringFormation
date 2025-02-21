@@ -29,10 +29,13 @@ error:
 
 spring:
   datasource:
-    url: jdbc:postgresql://postgis.aytronn.com
-    driverClassName: org.h2.Driver
-    username: "${DB_USER:example}"
-    password: "${DB_PASS:example}"
+    url: "${DB_URL}"
+    driverClassName: org.postgresql.Driver
+    username: "${DB_USER}"
+    password: "${DB_PASS}"
+  sql:
+    init:
+      mode: always
   security:
     user:
       name: user

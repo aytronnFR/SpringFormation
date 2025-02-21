@@ -29,7 +29,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
 
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
-    runtimeOnly("com.h2database:h2")
+    runtimeOnly("org.postgresql:postgresql")
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor:3.1.1")
     annotationProcessor("org.mapstruct:mapstruct:1.5.4.Final")

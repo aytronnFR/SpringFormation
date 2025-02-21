@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="AssetManagement" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+  <configuration default="false" name="Example" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <option name="SCHEDULED_DEBUGGER" value="true" />
-    <module name="seahawk-backend.assetsmanagement-service.main" />
+    <module name="example.main" />
     <option name="SHORTEN_COMMAND_LINE" value="ARGS_FILE" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="com.traxens.AssetsManagementApplication" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.aytronn.example.ExampleApplication" />
     <extension name="net.ashald.envfile">
       <option name="IS_ENABLED" value="true" />
       <option name="IS_SUBST" value="false" />

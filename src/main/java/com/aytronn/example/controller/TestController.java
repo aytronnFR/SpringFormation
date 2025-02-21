@@ -4,6 +4,7 @@ import com.aytronn.example.dao.Test;
 import com.aytronn.example.dto.CreateTestDto;
 import com.aytronn.example.service.TestService;
 import jakarta.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.http.ResponseEntity;
@@ -41,9 +42,9 @@ public class TestController {
   }
 
   @PostMapping
-  public ResponseEntity<Test> createTest(@RequestBody @Valid CreateTestDto createTestDto) {
-    Test test = testService.createTest(createTestDto);
-    return ResponseEntity.ok(test);
+  public ResponseEntity<Object> createTest(@RequestBody @Valid CreateTestDto createTestDto) {
+    testService.createTest(createTestDto);
+    return ResponseEntity.created(URI.create("")).build();
   }
 
   @PutMapping("/{id}")
@@ -59,7 +60,7 @@ public class TestController {
   public ResponseEntity<Test> deleteTest(
       @PathVariable UUID id
   ) {
-    Test test = testService.deleteTest(id);
-    return ResponseEntity.ok(test);
+    testService.deleteTest(id);
+    return ResponseEntity.ok().build();
   }
 }

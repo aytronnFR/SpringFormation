@@ -5,6 +5,7 @@ import com.aytronn.example.dao.Test;
 import com.aytronn.example.dao.Test.TestBuilder;
 import com.aytronn.example.dto.CreateTestDto;
 import com.aytronn.example.exception.TestNotFoundException;
+import com.aytronn.example.repository.TestRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,73 +17,63 @@ public class TestService {
 
   private final List<Test> tests;
   private final ExampleConfig exampleConfig;
+  private final TestRepository testRepository;
 
-  public TestService(ExampleConfig exampleConfig) {
+  public TestService(ExampleConfig exampleConfig, TestRepository testRepository) {
     this.exampleConfig = exampleConfig;
+    this.testRepository = testRepository;
     this.tests = new ArrayList<>();
   }
 
   public List<Test> getAllTest() {
-    //TODO: FIND ALL OBJECT ON DATABASE
-
-    System.out.println(exampleConfig.getValue());
-    return tests;
+    return testRepository.findAll();
   }
 
   public Test getTestById(UUID id) {
-    //TODO: FIND OBJECT FROM DATABASE WITH FILTER ON ID
-    Optional<Test> first = tests.stream()
-        .filter(test -> test.getId().equals(id))
-        .findFirst();
+    Optional<Test> byId = testRepository.findById(id);
 
-    if (first.isEmpty()) {
+    if (byId.isEmpty()) {
       throw new TestNotFoundException("Test not found");
     }
-    return first.get();
+
+    return byId.get();
   }
 
-  public Test createTest(CreateTestDto createTestDto) {
-    Test test = new Test(
-        UUID.randomUUID(),
-        createTestDto.name(),
-        createTestDto.description(),
-        createTestDto.age()
-    );
-
-    TestBuilder builder = Test.builder()
+  public void createTest(CreateTestDto createTestDto) {
+    Test test = Test.builder()
         .name(createTestDto.name())
-        .age(createTestDto.age());
-    if (createTestDto.description() != null) {
-      builder.description(createTestDto.description());
-    }
+        .age(createTestDto.age())
+        .description(createTestDto.description())
+        .build();
 
-    Test build = builder.build();
-
-    //TODO: SAVE OBJECT TO DATABASE
-    tests.add(test);
-    return test;
+    testRepository.save(test);
   }
 
   public Test updateTest(CreateTestDto createTestDto, UUID id) {
-    Test testById = tests.stream().filter(test -> test.getId().equals(id))
-        .findFirst()
-        .orElseThrow(() -> new TestNotFoundException("Test not found"));
+    Optional<Test> byId = testRepository.findById(id);
 
-    testById.setName(createTestDto.name());
-    testById.setDescription(createTestDto.description());
-    testById.setAge(createTestDto.age());
-    //TODO: SAVE TO DATABASE
-    return testById;
+    if (byId.isEmpty()) {
+      throw new TestNotFoundException("Test not found");
+    }
+
+    Test test = byId.get();
+    test.setName(createTestDto.name());
+    test.setDescription(createTestDto.description());
+    test.setAge(createTestDto.age());
+
+    testRepository.update(test);
+    return test;
   }
 
-  public Test deleteTest(UUID id) {
-    Test testById = tests.stream().filter(test -> test.getId().equals(id))
-        .findFirst()
-        .orElseThrow(() -> new TestNotFoundException("Test not found"));
+  public void deleteTest(UUID id) {
+    Optional<Test> byId = testRepository.findById(id);
 
-    //TODO: REMOVE OBJECT TO DATABASE
-    tests.remove(testById);
+    if (byId.isEmpty()) {
+      throw new TestNotFoundException("Test not found");
+    }
 
-    return testById;
+    Test test = byId.get();
+
+    testRepository.delete(id);
   }
 }
